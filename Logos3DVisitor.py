@@ -9,16 +9,30 @@ else:
 
 class Logos3DVisitor(ParseTreeVisitor):
 
-    def __init__(self):
+    def __init__(self, metodeEntrada, argv):
        self.pilaPrograma = []
        main = {}
+       self.primerProcediment = metodeEntrada
+       self.arguments = argv
        self.pilaPrograma.append(main)
        self.proc = {}
-    
+
     # Visit a parse tree produced by Logos3DParser#root.
     def visitRoot(self, ctx:Logos3DParser.RootContext):
-        return self.visitChildren(ctx)
-
+        self.visitChildren(ctx)
+        main = self.proc.get('main')
+        if self.primerProcediment != "main":
+            main = self.proc.get(self.primerProcediment)
+            context = self.pilaPrograma[len(self.pilaPrograma)-1]
+            i = 3
+            for arg in self.arguments:
+                context[main[i].getText()] = float(arg)
+                i+=2
+        if main != None:
+            i=5
+            while main[i].getText() != "END":
+                self.visit(main[i])
+                i+=1
 
     # Visit a parse tree produced by Logos3DParser#statement.
     def visitStatement(self, ctx:Logos3DParser.StatementContext):
@@ -62,8 +76,9 @@ class Logos3DVisitor(ParseTreeVisitor):
 
     # Visit a parse tree produced by Logos3DParser#crea_procediment.
     def visitCrea_procediment(self, ctx:Logos3DParser.Crea_procedimentContext):
+        l = list(ctx.getChildren()) 
+        self.proc[l[1].getText()] = l
         
-        return self.visitChildren(ctx)
 
 
     # Visit a parse tree produced by Logos3DParser#bucle_while.
@@ -103,9 +118,8 @@ class Logos3DVisitor(ParseTreeVisitor):
                 i+=1
         else:
             i = 3
-            while l[i].getText() != "ELSE":
+            while  l[i].getText() != "END" and l[i].getText() != "ELSE":
                 i+=1
-            i += 1
             while l[i].getText() != "END":
                 self.visit(l[i])
                 i+=1
@@ -117,7 +131,23 @@ class Logos3DVisitor(ParseTreeVisitor):
 
     # Visit a parse tree produced by Logos3DParser#procediment.
     def visitProcediment(self, ctx:Logos3DParser.ProcedimentContext):
-        return self.visitChildren(ctx)
+        l = list(ctx.getChildren())
+        context = {}
+        actProc = self.proc[l[0].getText()]
+        i=2
+        data = self.pilaPrograma[len(self.pilaPrograma)-1]
+        while actProc[i].getText() != ")":
+            # context[actProc[i].getText()] = data[l[i].getText()]
+            if actProc[i+1].getText() != "," and actProc[i+1].getText() != ")":
+                context[actProc[i+1].getText()] = data[l[i].getText()]
+            i+=1
+        i+=2
+        self.pilaPrograma.append(context)
+        while actProc[i].getText() != "END":
+            self.visit(actProc[i])
+            i+=1
+        self.pilaPrograma.pop()
+        
 
 
     # Visit a parse tree produced by Logos3DParser#variable.
