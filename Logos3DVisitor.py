@@ -1,5 +1,6 @@
 # Generated from Logos3D.g by ANTLR 4.9.2
 from antlr4 import *
+from Turtle3D import  Turtle3D 
 if __name__ is not None and "." in __name__:
     from .Logos3DParser import Logos3DParser
 else:
@@ -16,7 +17,9 @@ class Logos3DVisitor(ParseTreeVisitor):
        self.arguments = argv
        self.pilaPrograma.append(main)
        self.proc = {}
+       self.tortuga = None
 
+       
     # Visit a parse tree produced by Logos3DParser#root.
     def visitRoot(self, ctx:Logos3DParser.RootContext):
         self.visitChildren(ctx)
@@ -59,9 +62,9 @@ class Logos3DVisitor(ParseTreeVisitor):
             print ("Sintaxi incorrecta: FOR (condicio) FROM enter TO enter DO (clausules) END ")
             return
         iterador = l[1].getText()
-        context[iterador] = int(l[3].getText())
-        limit = int(l[5].getText())
-        while(context[iterador] < limit):
+        context[iterador] = self.visit(l[3])
+        limit = int(self.visit(l[5]))
+        while(int(context[iterador]) < int(limit)):
              i = 7
              while(l[i].getText() != "END"):
                 self.visit(l[i])
@@ -131,18 +134,69 @@ class Logos3DVisitor(ParseTreeVisitor):
 
     # Visit a parse tree produced by Logos3DParser#procediment.
     def visitProcediment(self, ctx:Logos3DParser.ProcedimentContext):
+
         l = list(ctx.getChildren())
+        if l[0].getText() == "forward":
+            if (self.tortuga==None):
+                self.tortuga = Turtle3D() 
+            self.tortuga.forward(self.visit(l[2]))
+            return
+        if l[0].getText() == "backward":
+            if (self.tortuga==None):
+                self.tortuga = Turtle3D() 
+            self.tortuga.backward(self.visit(l[2]))
+            return
+        if l[0].getText() == "up":
+            if (self.tortuga==None):
+                self.tortuga = Turtle3D() 
+            self.tortuga.up(self.visit(l[2]))
+            return
+        if l[0].getText() == "down":
+            if (self.tortuga==None):
+                self.tortuga = Turtle3D() 
+            self.tortuga.down(self.visit(l[2]))
+            return
+        if l[0].getText() == "left":
+            if (self.tortuga==None):
+                self.tortuga = Turtle3D() 
+            self.tortuga.left(self.visit(l[2]))
+            return
+        if l[0].getText() == "right":
+            if (self.tortuga==None):
+                self.tortuga = Turtle3D() 
+            self.tortuga.right(self.visit(l[2]))
+            return
+        if l[0].getText() == "home":
+            if (self.tortuga==None):
+                self.tortuga = Turtle3D() 
+            self.tortuga.home()
+            return
+        if l[0].getText() == "hide":
+            if (self.tortuga==None):
+                self.tortuga = Turtle3D() 
+            self.tortuga.hide()
+            return
+        if l[0].getText() == "show":
+            if (self.tortuga==None):
+                self.tortuga = Turtle3D() 
+            self.tortuga.show()
+            return
+        if l[0].getText() == "color":
+            if (self.tortuga==None):
+                self.tortuga = Turtle3D() 
+            self.tortuga.color(self.visit(l[2]), self.visit(l[4]), self.visit(l[6]))
+            return
         context = {}
         actProc = self.proc[l[0].getText()]
         i=2
         data = self.pilaPrograma[len(self.pilaPrograma)-1]
         while actProc[i].getText() != ")":
-            # context[actProc[i].getText()] = data[l[i].getText()]
             if actProc[i+1].getText() != "," and actProc[i+1].getText() != ")":
-                context[actProc[i+1].getText()] = data[l[i].getText()]
+                context[actProc[i+1].getText()] = self.visit(l[i])
             i+=1
         i+=2
         self.pilaPrograma.append(context)
+        
         while actProc[i].getText() != "END":
             self.visit(actProc[i])
             i+=1

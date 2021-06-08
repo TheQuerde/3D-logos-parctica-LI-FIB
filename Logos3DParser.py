@@ -44,7 +44,7 @@ def serializedATN():
         buf.write("\f\2,&\3\2\2\2,\'\3\2\2\2,(\3\2\2\2,)\3\2\2\2,*\3\2\2")
         buf.write("\2,+\3\2\2\2-\5\3\2\2\2./\7 \2\2/\60\7\3\2\2\60\61\5\26")
         buf.write("\f\2\61\7\3\2\2\2\62\63\7\4\2\2\63\64\5\22\n\2\64\65\7")
-        buf.write("\5\2\2\65\66\7\37\2\2\66\67\7\6\2\2\678\7\37\2\28:\7\7")
+        buf.write("\5\2\2\65\66\5\26\f\2\66\67\7\6\2\2\678\5\26\f\28:\7\7")
         buf.write("\2\29;\5\4\3\2:9\3\2\2\2;<\3\2\2\2<:\3\2\2\2<=\3\2\2\2")
         buf.write("=>\3\2\2\2>?\7\b\2\2?\t\3\2\2\2@A\7\t\2\2AB\7 \2\2BH\7")
         buf.write("\n\2\2CD\5\24\13\2DE\7\13\2\2EG\3\2\2\2FC\3\2\2\2GJ\3")
@@ -418,11 +418,12 @@ class Logos3DParser ( Parser ):
             return self.getTypedRuleContext(Logos3DParser.VariableContext,0)
 
 
-        def NUM(self, i:int=None):
+        def expr(self, i:int=None):
             if i is None:
-                return self.getTokens(Logos3DParser.NUM)
+                return self.getTypedRuleContexts(Logos3DParser.ExprContext)
             else:
-                return self.getToken(Logos3DParser.NUM, i)
+                return self.getTypedRuleContext(Logos3DParser.ExprContext,i)
+
 
         def statement(self, i:int=None):
             if i is None:
@@ -457,11 +458,11 @@ class Logos3DParser ( Parser ):
             self.state = 50
             self.match(Logos3DParser.T__2)
             self.state = 51
-            self.match(Logos3DParser.NUM)
+            self.expr()
             self.state = 52
             self.match(Logos3DParser.T__3)
             self.state = 53
-            self.match(Logos3DParser.NUM)
+            self.expr()
             self.state = 54
             self.match(Logos3DParser.T__4)
             self.state = 56 

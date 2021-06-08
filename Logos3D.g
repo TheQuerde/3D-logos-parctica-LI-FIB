@@ -11,7 +11,7 @@ statement : assigna_variable
 
 assigna_variable : ID ':=' expr ;
 
-bucle_for: 'FOR' variable  'FROM' NUM 'TO' NUM 'DO' statement+ 'END';
+bucle_for: 'FOR' variable  'FROM' expr 'TO' expr 'DO' statement+ 'END';
 
 crea_procediment: 'PROC'  ID '('(parametre',')*parametre*')' 'IS' statement+ 'END';
 
