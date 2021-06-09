@@ -59,7 +59,7 @@ class Logos3DVisitor(ParseTreeVisitor):
         context = self.pilaPrograma[len(self.pilaPrograma)-1].copy()
         self.pilaPrograma.append(context)
         if l[len(l)-1].getText() != "END":
-            print ("Sintaxi incorrecta: FOR (condicio) FROM enter TO enter DO (clausules) END ")
+            print ("Sintaxi incorrecta: FOR (condicio) FROM (enter o variable) TO (enter o variable) DO (clausules) END ")
             return
         iterador = l[1].getText()
         context[iterador] = self.visit(l[3])

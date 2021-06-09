@@ -1,5 +1,5 @@
 from vpython import *
-import numpy as np
+#import numpy as np
 import math
 
 class Turtle3D():

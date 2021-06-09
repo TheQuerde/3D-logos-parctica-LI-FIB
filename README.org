@@ -1,0 +1,15 @@
+#+TITLE: 3DLOGOS
+
+* Motivació i objectius del llenguatge
+Aquest lleguatge esta pensat amb finalitats didàctiques. Intenta emular l'antic Logos. Un llenguatge pensat per que els nens poguessin apendre a programar d'una forma sencilla.
+Dons la gran diferencia, és que aquest en lloc de tenir un entorn 2D treballa en un entorn 3D.
+Podem dons moure la tortuga en un espai i no només en un plà.
+** Espai 3D? Com?
+Una de les funcionalitats del llenguatge és la posibilitat de moure una tortuga en un espai tridimensional. Per entendre com ho fa, he d'explicar dos conceptes bàsics:
+*** Velocitat de la tortuga
+La velocitat de la tortuga és un vector que mostra cap on es dirigeix aquesta, si el cambiem, aquesta tindra un nou rum.
+Més endevant explicare com modificar aquest vector en detall. La idea general és que el llenguatge, permet rotar aquest vector amb certes instruccions seguit la regla de la má dreta donada aquesta represantació de les coordenades de l'espai:
+#+CAPTION: Imatge obtinguda de [[https://www.smashingmagazine.com/2016/07/front-end-challenge-accepted-css-3d-cube/]]
+#+NAME:   axis
+[[axis.png]]
+*** Pocició de la tortuga
