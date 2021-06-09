@@ -1,15 +1,121 @@
 #+TITLE: 3DLOGOS
 
 * Motivació i objectius del llenguatge
-Aquest lleguatge esta pensat amb finalitats didàctiques. Intenta emular l'antic Logos. Un llenguatge pensat per que els nens poguessin apendre a programar d'una forma sencilla.
+Aquest lleguatge esta pensat amb finalitats didàctiques. Intenta emular l'antic Logos. Un llenguatge pensat per que les criatures de la casa poguessin apendre a programar d'una forma sencilla.
 Dons la gran diferencia, és que aquest en lloc de tenir un entorn 2D treballa en un entorn 3D.
 Podem dons moure la tortuga en un espai i no només en un plà.
 ** Espai 3D? Com?
 Una de les funcionalitats del llenguatge és la posibilitat de moure una tortuga en un espai tridimensional. Per entendre com ho fa, he d'explicar dos conceptes bàsics:
 *** Velocitat de la tortuga
 La velocitat de la tortuga és un vector que mostra cap on es dirigeix aquesta, si el cambiem, aquesta tindra un nou rum.
-Més endevant explicare com modificar aquest vector en detall. La idea general és que el llenguatge, permet rotar aquest vector amb certes instruccions seguit la regla de la má dreta donada aquesta represantació de les coordenades de l'espai:
+Més endevant explicare com modificar aquest vector en detall. La idea general és que el llenguatge, permet rotar aquest vector amb certes instruccions seguit la regla de la má dreta donada aquesta representació de les coordenades de l'espai:
+#+ATTR_ORG: :width 255
 #+CAPTION: Imatge obtinguda de [[https://www.smashingmagazine.com/2016/07/front-end-challenge-accepted-css-3d-cube/]]
-#+NAME:   axis
-[[axis.png]]
+#+NAME:   axis.png
+[[file:axis.png]]
+
+El nostre vector dons rotarà en el sentit segons tanqui la nostre má dreta on el dit polse marcara el sentit. (regla má dreta)
+També hem de considerar el vector (0,1,0) com la velocitat inicial.
 *** Pocició de la tortuga
+La tortuga també te una posició (x,y,z). Aquesta és inicialment la (0,0,0) i a partir d'aquesta, i la velocitat, podem fer-la avançar o retrocedir en el rum que en indiqui la velocitat.
+
+* Com instalar el programar
+Tenir instalat python.
+Instalar el requeriments amb la comanda:
+#+begin_src bash
+python -m pip install -r requirements.txt
+#+end_src
+I ja estaria, podeu probar si funciona fent:
+#+begin_src bash
+python logo3d.py
+#+end_src
+on us hauria d'apareixer en pantalla un main:
+* Com fer funcionar l'interpret
+Per usar aquest interpret heu de fer us de la comanda:
+#+begin_src bash
+python logo3d.py [programa] [metode] [parametres]
+#+end_src
+Tant el programa com el metode com els parametres son opcionals.
+Els parametres van separats amb un espai i no calen parentesis.
+** Funcions en comanda
+3DLOGOS permet pasar un metode en la comanda per tal d'executar aquest directament, sense pasar pel main. Més endevant explico com funcionen els metodes
+* I com programo?
+Pots fer-ho directament a l'interpret o bé amb un fitxer .l3d.
+** Metodes
+Un metode es una serie de instruccions agrupades. Aquest no retorna ningun resultat. L'interpret sempre buscara primer el metode main tot i que aquest no estigui declarat. Cada metode té el seu propi context. No podrem dons usar variable d'altres metodes.
+Tot el que estigui fora d'un metode, estara dins del main.
+Els metodes sempre han de comançar per una lletra minúscula.
+*** Declaració
+La declaració es la seguent:
+#+begin_src
+PROC nomMetode([parametres]) IS [instruccions] END
+#+end_src
+els parametres van separats per comes i un espai.
+*** Crida
+Per usar un metode, aquest ha d'estar declarat previament en alguna part del programa.
+#+begin_src
+nomMetode([parametres])
+#+end_src
+els parametres van separats per una coma i un espai.
+** Variables
+Podem guardar informació del programa en variables. Aquestes només permeten valors numèrics. El nom de les varieables han de començar per minuscula. Tampoc es permet l'ús dels caracters ( i ). Ja que aquest estan reservats pls metodes.
+*** Asignar variable
+#+begin_src
+nomVar := [valor_numeric]
+#+end_src
+o bé podem capturar el valor de la linia de comandes amb:
+#+begin_src
+>> nomVar
+#+end_src
+*** Us variable
+Aquesta ha d'estar previament assignada. Simplement posarem el nom de la variable on pertoqui. I l'interprete ja fara la feina de retornar-li el valor actual.
+** Entrades i sortides
+#+begin_src
+<< (expresio o variable) //mostra el resultat en pantalla
+>> nomVariable //guarda el valor en nomVariable
+#+end_src
+** Operadors
+Podem realitzar tant operacions matematiques (+,-,*,/,^) com operacions d'ordre (<,>,=,>=,<=) també disposa de la operació diferent !=
+#+begin_src
+a + 2
+1 < 2 //per exemple
+#+end_src
+** Condicional
+Un condicional permet executar parts del codi en funció d'una condicio. Un exemple seria aquest:
+#+begin_src
+IF a<b THEN <<a ELSE <<b END
+#+end_src
+La part del ELSE és opcional, pero sempre ha d'acabar en END.
+** Bucles
+Per tal d'executar una part del codi multiples cop utilitzem els bucles. N'hi tenim dos:
+*** WHILE
+#+begin_src
+WHILE [condició] DO [instruccions] END
+#+end_src
+*** FOR
+Si necesitem una variable que enregistri la itareció del bucle.
+#+begin_src
+FOR variable FROM 0 TO maxVar DO [instuccions] END
+#+end_src
+** Comentaris
+Per últim i no menys important, tenim la opcio de comentar parts del codi. Aquests seran ignorats per l'interprete.
+#+begin_src
+//aixo es un comentari de linia
+//main() no sexecutara res perque esta comantada
+#+end_src
+* Metodes adicionals
+El llenguatge proveeix de forma nativa uns metodes per tal de moure la tortuga.
+** Cambiar posició
+#+begin_src
+forward(num) //Fa avançar num vegades en el setit i direcció de la velocitat
+backward(num) //Fa retrocedir num vegades en el sentit i direcció de la velocitat
+#+end_src
+num pot ser tant una variable com un numero.
+** Canviar el rum
+#+begin_src
+up(angle) //rota el vector per l'eix x en sentit de les agulles del rellotge
+down(angle) //rota el vector per l'eix x en sentit contrari a les agulles del rellotge
+right(angle) //rota el vector per l'eix z en sentit contrari a les agulles del rellotge
+left(angle) //rota el vector per l'eix z en el sentit contrari a les agulles del rellotge
+#+end_src
+En tots el casos angle seran els graus que gira aquest i pot ser tant una variable com un valor numèric.
